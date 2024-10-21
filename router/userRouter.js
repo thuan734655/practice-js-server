@@ -1,6 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
-import connectDB from "../ConnectDB/connect.js";
+import connectDB from "../connect.js";
 
 const router = express.Router();
 
@@ -18,7 +18,7 @@ router.get("/all", (req, res) => {
 });
 
 // Get user by ID
-router.get("/id", (req, res) => {
+router.get("/id", (req, res) => { 
   const { id } = req.query;
 
   if (!id) {
@@ -56,7 +56,10 @@ router.post("/login", (req, res) => {
       if (result.length === 0) {
         return res.status(404).send("Account not found");
       }
-      return res.status(200).send("Login successful");
+      return res.status(200).send({ 
+        status: 200, 
+        message: "Login successful", 
+        data: { idUser: result }});
     }
   );
 });
