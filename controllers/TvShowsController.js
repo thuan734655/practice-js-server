@@ -9,7 +9,7 @@ class TvShowController {
   }
 
   static async getTvShowInformation(req, res) {
-    const { idVideo } = req.body;
+    const { idVideo } = req.query;
     if (!idVideo) {
       return res
         .status(400)

@@ -25,7 +25,7 @@ class TvShowService {
   static async getTvShowById(idVideo) {
     try {
       const [result] = await connectDB.query(
-        "SELECT * FROM video WHERE category = 'TV Show' AND idVideo = ?",
+        "SELECT * FROM video WHERE idVideo = ?",
         [idVideo]
       );
       if (result.length === 0) {
