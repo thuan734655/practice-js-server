@@ -98,6 +98,17 @@ class videoController {
         .json(createResponse(false, "Error deleting video", null));
     }
   }
+  static async getInfoMovieByID(req, res) {
+    const { idVideo } = req.query;
+    if (!idVideo) {
+      return res
+        .status(400)
+        .json(createResponse(false, "Invalid data to get TV show information"));
+    }
+    const result = await videoService.getInfoVideoByID(idVideo);
+    const { success, message, data, status } = result;
+    return res.status(status).json(createResponse(success, message, { data }));
+  }
 }
 
 export default videoController;

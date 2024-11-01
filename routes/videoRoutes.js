@@ -14,6 +14,8 @@ routerVideo.post(
   videoController.add
 );
 
+routerVideo.get("/video/information", videoController.getInfoMovieByID);
+
 routerVideo.get("/videos/mylist", videoController.getMyList);
 
 routerVideo.delete("/videos/delete", videoController.deleteVideo);
