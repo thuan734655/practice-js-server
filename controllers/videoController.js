@@ -52,8 +52,8 @@ class videoController {
 
     try {
       const result = await videoService.addService(videoData);
-      const { success, message, data, status } = result; // Destructuring result
-      return res.status(status).json(createResponse(success, message, data)); // Sử dụng data từ destructured result
+      const { success, message, data, status } = result;
+      return res.status(status).json(createResponse(success, message, data));
     } catch (error) {
       console.error("Error saving video:", error);
       return res
@@ -66,7 +66,7 @@ class videoController {
     const idUser = req.cookies.idUser;
     try {
       const result = await videoService.getMyListService(idUser);
-      const { success, message, data, status } = result; // Destructuring result
+      const { success, message, data, status } = result;
       return res
         .status(status)
         .json(createResponse(success, message, { data }));
@@ -80,7 +80,6 @@ class videoController {
 
   static async deleteVideo(req, res) {
     const { idVideo } = req.body;
-    console.log(req.body);
     if (!idVideo) {
       return res
         .status(400)
@@ -98,6 +97,7 @@ class videoController {
         .json(createResponse(false, "Error deleting video", null));
     }
   }
+
   static async getInfoMovieByID(req, res) {
     const { idVideo } = req.query;
     if (!idVideo) {
@@ -108,6 +108,54 @@ class videoController {
     const result = await videoService.getInfoVideoByID(idVideo);
     const { success, message, data, status } = result;
     return res.status(status).json(createResponse(success, message, { data }));
+  }
+  static async update(req, res) {
+    const { idVideo } = req.params;
+    console.log("Dữ liệu từ body:", req.body);
+    console.log("Tệp tin đã tải lên:", req.files);
+
+    if (!idVideo) {
+      return res
+        .status(400)
+        .json(createResponse(false, "ID video là bắt buộc", null));
+    }
+
+    const avatarUrl =
+      req.files["avatar"] && req.files["avatar"][0]
+        ? `/images/${req.files["avatar"][0].filename}`
+        : req.body.currentAvatar;
+
+    const backgroundUrl =
+      req.files["background"] && req.files["background"][0]
+        ? `/images/${req.files["background"][0].filename}`
+        : req.body.currentBackground;
+
+    const dataUpdateVideo = {
+      fullName: req.body.fullName,
+      description: req.body.description,
+      star: req.body.star,
+      avatar: avatarUrl,
+      background: backgroundUrl,
+      releaseDate: req.body.releaseDate,
+      runTime: req.body.runTime,
+      genres: req.body.genres,
+      status: req.body.status,
+      lastAirDate: req.body.lastAirDate,
+      episodes: req.body.episodes,
+      category: req.body.category,
+      noOfSeasons: req.body.noOfSeasons,
+    };
+
+    try {
+      const result = await videoService.updateService(idVideo, dataUpdateVideo);
+      const { success, message, status } = result;
+      return res.status(status).json(createResponse(success, message, null));
+    } catch (error) {
+      console.error("Lỗi cập nhật video:", error);
+      return res
+        .status(500)
+        .json(createResponse(false, "Lỗi khi cập nhật video", null));
+    }
   }
 }
 

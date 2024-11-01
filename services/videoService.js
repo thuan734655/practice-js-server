@@ -28,42 +28,10 @@ class videoService {
   }
 
   static async addService(dataNewVideo) {
-    const {
-      fullName,
-      description,
-      star,
-      avatar,
-      background,
-      releaseDate,
-      runTime,
-      genres,
-      status,
-      lastAirDate,
-      episodes,
-      category,
-      noOfSeasons,
-      idUser,
-    } = dataNewVideo;
-
     try {
       const [result] = await connectDB.query(
         "INSERT INTO `video`(`fullName`, `description`, `star`, `avatar`, `background`, `releaseDate`, `runTime`, `genres`, `status`, `lastAirDate`, `episodes`, `category`, `noOfSeasons`, `idUser`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-        [
-          fullName,
-          description,
-          star,
-          avatar,
-          background,
-          releaseDate,
-          runTime,
-          genres,
-          status,
-          lastAirDate,
-          episodes,
-          category,
-          noOfSeasons,
-          idUser,
-        ]
+        Object.values(dataNewVideo)
       );
 
       return {
@@ -194,6 +162,53 @@ class videoService {
         success: false,
         message: "Query error",
         data: null,
+        status: 500,
+      };
+    }
+  }
+  static async updateService(idVideo, dataUpdateVideo) {
+    const fields = [];
+    const values = [];
+
+    for (const key in dataUpdateVideo) {
+      if (dataUpdateVideo[key] != null) {
+        fields.push(`${key} = ?`);
+        values.push(dataUpdateVideo[key]);
+      }
+    }
+
+    // Nếu không có trường nào để cập nhật
+    if (fields.length === 0) {
+      return {
+        success: false,
+        message: "No fields to update",
+        status: 400,
+      };
+    }
+
+    const sql = `UPDATE video SET ${fields.join(", ")} WHERE idVideo = ?`;
+    values.push(idVideo);
+
+    try {
+      const [result] = await connectDB.query(sql, values);
+      if (result.affectedRows > 0) {
+        return {
+          success: true,
+          message: "Video updated successfully",
+          status: 200,
+        };
+      } else {
+        return {
+          success: false,
+          message: "Video not found or no changes made",
+          status: 404,
+        };
+      }
+    } catch (err) {
+      console.error("Error updating video:", err);
+      return {
+        success: false,
+        message: "Error updating video",
         status: 500,
       };
     }

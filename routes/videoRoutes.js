@@ -1,4 +1,3 @@
-// routes/video.routes.js
 import express from "express";
 import videoController from "../controllers/videoController.js";
 import uploadImages from "../middleware/uploadFile.js";
@@ -19,5 +18,11 @@ routerVideo.get("/video/information", videoController.getInfoMovieByID);
 routerVideo.get("/videos/mylist", videoController.getMyList);
 
 routerVideo.delete("/videos/delete", videoController.deleteVideo);
+
+routerVideo.put(
+  "/videos/update/:idVideo",
+  upload.fields([{ name: "avatar" }, { name: "background" }]),
+  videoController.update
+);
 
 export default routerVideo;
