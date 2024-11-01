@@ -3,9 +3,18 @@ import videoService from "../services/videoService.js";
 
 class videoController {
   static async videos(req, res) {
-    const result = await videoService.videos();
-    const { success, message, data, status } = result;
-    return res.status(status).json(createResponse(success, message, { data }));
+    try {
+      const result = await videoService.videos();
+      const { success, message, data, status } = result;
+      return res
+        .status(status)
+        .json(createResponse(success, message, { data }));
+    } catch (error) {
+      console.error("Error fetching videos:", error);
+      return res
+        .status(500)
+        .json(createResponse(false, "Error fetching videos", null));
+    }
   }
 
   static async add(req, res) {
@@ -43,9 +52,8 @@ class videoController {
 
     try {
       const result = await videoService.addService(videoData);
-      return res
-        .status(result.status)
-        .json(createResponse(result.success, result.message, result.data));
+      const { success, message, data, status } = result; // Destructuring result
+      return res.status(status).json(createResponse(success, message, data)); // Sử dụng data từ destructured result
     } catch (error) {
       console.error("Error saving video:", error);
       return res
@@ -53,11 +61,42 @@ class videoController {
         .json(createResponse(false, "Error saving video", null));
     }
   }
+
   static async getMyList(req, res) {
     const idUser = req.cookies.idUser;
-    const result = await videoService.getMyListService(idUser);
-    const { success, message, data, status } = result;
-    return res.status(status).json(createResponse(success, message, { data }));
+    try {
+      const result = await videoService.getMyListService(idUser);
+      const { success, message, data, status } = result; // Destructuring result
+      return res
+        .status(status)
+        .json(createResponse(success, message, { data }));
+    } catch (error) {
+      console.error("Error fetching user's video list:", error);
+      return res
+        .status(500)
+        .json(createResponse(false, "Error fetching user's video list", null));
+    }
+  }
+
+  static async deleteVideo(req, res) {
+    const { idVideo } = req.body;
+    console.log(req.body);
+    if (!idVideo) {
+      return res
+        .status(400)
+        .json(createResponse(false, "Video ID is required", null));
+    }
+
+    try {
+      const result = await videoService.deleteVideoService(idVideo);
+      const { success, message, status } = result;
+      return res.status(status).json(createResponse(success, message, null));
+    } catch (error) {
+      console.error("Error deleting video:", error);
+      return res
+        .status(500)
+        .json(createResponse(false, "Error deleting video", null));
+    }
   }
 }
 
