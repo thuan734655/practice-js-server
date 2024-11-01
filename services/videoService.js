@@ -1,9 +1,8 @@
 import connectDB from "../config/connectDB.js";
 import fs from "fs";
 import path from "path";
-import url from "url"; // Nhập module url
+import url from "url";
 
-// Lấy đường dẫn của tệp hiện tại
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -105,7 +104,6 @@ class videoService {
       const avatarPath = path.join(__dirname, "../", video[0].avatar);
       const backgroundPath = path.join(__dirname, "../", video[0].background);
 
-      // Kiểm tra và xóa avatar
       if (fs.existsSync(avatarPath)) {
         console.log(`Deleting avatar: ${avatarPath}`);
         fs.unlinkSync(avatarPath);
@@ -113,7 +111,6 @@ class videoService {
         console.log(`Avatar not found: a${avatarPath}`);
       }
 
-      // Kiểm tra và xóa background
       if (fs.existsSync(backgroundPath)) {
         console.log(`Deleting background: ${backgroundPath}`);
         fs.unlinkSync(backgroundPath);
