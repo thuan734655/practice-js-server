@@ -11,7 +11,8 @@ class AuthController {
       res.cookie("idUser", idUser, {
         maxAge: 86400000, // 1 day
         path: "/",
-        sameSite: "Lax",
+        sameSite: "None",
+        secure: true,
       });
     }
 
