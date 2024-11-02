@@ -17,7 +17,7 @@ const __dirname = path.dirname(__filename);
 // Middleware
 app.use(
   cors({
-    origin: ["http://localhost:1234", "https://practice-js1.onrender.com"],
+    origin: "https://practice-js1.onrender.com",
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization", "baseURL"],
     credentials: true, // Allow credentials (cookies, authorization headers, etc.)

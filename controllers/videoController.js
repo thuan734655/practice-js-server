@@ -18,8 +18,6 @@ class videoController {
   }
 
   static async add(req, res) {
-    const idUser = req.cookies.idUser;
-
     if (!req.files) {
       return res
         .status(400)
@@ -47,7 +45,7 @@ class videoController {
       episodes: req.body.episodes,
       category: req.body.category,
       noOfSeasons: req.body.noOfSeasons,
-      idUser: idUser,
+      idUser: req.body.idUser,
     };
 
     try {
@@ -63,7 +61,8 @@ class videoController {
   }
 
   static async getMyList(req, res) {
-    const idUser = req.cookies.idUser;
+    const idUser = req.query.idUser;
+    console.log(idUser);
     try {
       const result = await videoService.getMyListService(idUser);
       const { success, message, data, status } = result;
