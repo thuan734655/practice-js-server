@@ -13,6 +13,7 @@ class AuthController {
         path: "/",
         sameSite: "None",
         secure: true,
+        domain: "practice-js1.onrender.com",
       });
     }
 
