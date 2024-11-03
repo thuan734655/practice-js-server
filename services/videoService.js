@@ -174,7 +174,6 @@ class videoService {
       }
     }
 
-    // Nếu không có trường nào để cập nhật
     if (fields.length === 0) {
       return {
         success: false,

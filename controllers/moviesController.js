@@ -6,13 +6,6 @@ class MovieController {
     const { success, message, data, status } = result;
     return res.status(status).json(createResponse(success, message, { data }));
   }
-
-  static async searchMovies(req, res) {
-    const { name } = req.query;
-    const result = await MovieService.searchMoviesByName(name);
-    const { success, message, data, status } = result;
-    return res.status(status).json(createResponse(success, message, { data }));
-  }
 }
 
 export default MovieController;

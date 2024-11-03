@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Hàm tạo middleware upload
+// function create middleware upload
 const uploadImages = () => {
   const storage = multer.diskStorage({
     destination: (req, file, cb) => {

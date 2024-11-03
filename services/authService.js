@@ -1,4 +1,3 @@
-import e from "express";
 import connectDB from "../config/connectDB.js";
 
 const authService = {
